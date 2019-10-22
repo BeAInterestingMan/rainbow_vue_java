@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuhu.rainbow.system.mapper.RoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.liuhu.rainbow.system.entity.Role">
+        <id column="ID" property="id" />
+        <result column="NAME" property="name" />
+        <result column="STATUS" property="status" />
+        <result column="CREATOR" property="creator" />
+        <result column="CREATOR_NAME" property="creatorName" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="UPDATOR" property="updator" />
+        <result column="UPDATOR_NAME" property="updatorName" />
+        <result column="UPDATE_TIME" property="updateTime" />
+        <result column="REMARK" property="remark" />
+    </resultMap>
+
+    <select id="selectRoleListByUsername" resultMap="BaseResultMap" parameterType="string">
+       SELECT
+     	SR.*
+        FROM
+            sys_user SU
+        JOIN sys_user_role SUR ON SU.ID = SUR.USER_ID
+        JOIN sys_role SR ON SUR.ROLE_ID = SR.ID
+        WHERE USERNAME = #{username} and SR.status = '0'
+    </select>
+
+
+</mapper>

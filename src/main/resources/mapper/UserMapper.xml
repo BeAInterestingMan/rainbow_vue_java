@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuhu.rainbow.system.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.liuhu.rainbow.system.entity.User">
+        <id column="ID" property="id" />
+        <result column="USERNAME" property="username" />
+        <result column="PASSWORD" property="password" />
+        <result column="EMAIL" property="email" />
+        <result column="MOBILE" property="mobile" />
+        <result column="STATUS" property="status" />
+        <result column="LAST_LOGIN_TIME" property="lastLoginTime" />
+        <result column="SEX" property="sex" />
+        <result column="IS_TAB" property="isTab" />
+        <result column="THEME" property="theme" />
+        <result column="AVATAR" property="avatar" />
+        <result column="DESCRIPTION" property="description" />
+        <result column="SALT" property="salt" />
+        <result column="CREATOR" property="creator" />
+        <result column="CREATOR_NAME" property="creatorName" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="UPDATOR" property="updator" />
+        <result column="UPDATOR_NAME" property="updatorName" />
+        <result column="UPDATE_TIME" property="updateTime" />
+        <result column="REMARK" property="remark" />
+    </resultMap>
+
+    <!--得到当前用户-->
+     <select id="selectUserByUsername" parameterType="string" resultMap="BaseResultMap">
+         SELECT * FROM sys_user WHERE USERNAME = #{username}
+     </select>
+
+    <select id="findAllByPage"  resultMap="BaseResultMap">
+         SELECT * FROM sys_user
+     </select>
+
+</mapper>

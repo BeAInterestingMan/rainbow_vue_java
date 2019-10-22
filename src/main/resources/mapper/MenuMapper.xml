@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuhu.rainbow.system.mapper.MenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.liuhu.rainbow.system.entity.Menu">
+        <id column="ID" property="id" />
+        <result column="PARENT_ID" property="parentId" />
+        <result column="MENU_NAME" property="menuName" />
+        <result column="URL" property="url" />
+        <result column="PERMISSION" property="permission" />
+        <result column="ICON" property="icon" />
+        <result column="TYPE" property="type" />
+        <result column="SORT" property="sort" />
+        <result column="STATUS" property="status" />
+        <result column="CREATOR" property="creator" />
+        <result column="CREATOR_NAME" property="creatorName" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="UPDATOR" property="updator" />
+        <result column="UPDATOR_NAME" property="updatorName" />
+        <result column="UPDATE_TIME" property="updateTime" />
+        <result column="REMARK" property="remark" />
+    </resultMap>
+
+    <select id="selectMenuListByUsername" parameterType="string" resultMap="BaseResultMap">
+  SELECT
+            m.*
+        FROM
+            sys_menu m
+        WHERE
+            m.type &lt;&gt; 1
+            AND m.status ='0'
+        AND m.ID IN (
+            SELECT DISTINCT
+                rm.menu_id
+            FROM
+                sys_role_menu rm
+            LEFT JOIN sys_role r ON (rm.role_id = r.ID)
+            LEFT JOIN sys_user_role ur ON (ur.role_id = r.ID)
+            LEFT JOIN sys_user u ON (u.ID = ur.user_id)
+            WHERE
+                u.username = #{username}
+                AND r.status = '0' AND u.status = '0'
+        )
+        ORDER BY
+          m.SORT
+    </select>
+</mapper>
