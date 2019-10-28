@@ -92,6 +92,7 @@ public class ShiroRealm extends AuthorizingRealm {
         String redisToken = null;
         try {
             // key  为 系统参数 + token
+            String key = RainbowConstant.RAINBOW_TOKEN+token+"."+RainbowConstant.EXPIRE_TIME;
             redisToken = this.redisService.get(RainbowConstant.RAINBOW_TOKEN+token+"."+RainbowConstant.EXPIRE_TIME);
         }catch (Exception e){
              e.printStackTrace();

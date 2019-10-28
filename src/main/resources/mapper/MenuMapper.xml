@@ -8,6 +8,11 @@
         <result column="PARENT_ID" property="parentId" />
         <result column="MENU_NAME" property="menuName" />
         <result column="URL" property="url" />
+
+        <result column="PATH" property="path" />
+        <result column="NAME" property="name" />
+        <result column="ICONCLS" property="iconCls" />
+
         <result column="PERMISSION" property="permission" />
         <result column="ICON" property="icon" />
         <result column="TYPE" property="type" />
@@ -24,7 +29,7 @@
 
     <select id="selectMenuListByUsername" parameterType="string" resultMap="BaseResultMap">
   SELECT
-            m.*
+            m.url as PATH,m.MENU_NAME as name ,m.PARENT_ID,m.COMPONENT,m.ICON as ICONCLS,m.id
         FROM
             sys_menu m
         WHERE

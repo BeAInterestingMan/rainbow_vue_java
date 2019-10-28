@@ -45,6 +45,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public JsonResult handlerException(Exception e){
+        e.printStackTrace();
         return JsonResult.fail(e.getMessage());
     }
 

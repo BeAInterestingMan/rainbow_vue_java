@@ -1,5 +1,6 @@
 package com.liuhu.rainbow.system.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 菜单实体
@@ -60,6 +62,11 @@ public class Menu extends Model<Menu> {
      */
     private Long sort;
 
+    @TableField(exist = false)
+    private String path;
+
+
+
     /**
      * 状态：0-正常，1-不可用
      */
@@ -95,5 +102,17 @@ public class Menu extends Model<Menu> {
      */
     private String remark;
 
+   /** vue组件*/
+    private String component;
+
+    /** 子菜单*/
+    @TableField(exist = false)
+    private List<Menu> children;
+
+    /** vue组件*/
+    private String name;
+
+    /** vue组件*/
+    private String iconCls;
 
 }

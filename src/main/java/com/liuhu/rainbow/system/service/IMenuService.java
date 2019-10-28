@@ -20,4 +20,12 @@ public interface IMenuService extends IService<Menu> {
      * @createTime 2019-10-21 15:19:31
      */
     List<Menu> selectMenuListByUsername(String username);
+    /**
+     * 通过用户名得到用户所属菜单集合 树形数据
+     * @param username 用户名
+     * @return java.util.List<com.liuhu.rainbow.system.entity.Menu>
+     * @author melo、lh
+     * @createTime 2019-10-22 17:37:07
+     */
+    List<Menu>  getUserMenu(String username);
 }

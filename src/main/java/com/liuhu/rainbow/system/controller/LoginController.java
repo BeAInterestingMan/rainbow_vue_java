@@ -16,6 +16,7 @@ import com.liuhu.rainbow.system.vo.JsonResult;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,15 +41,15 @@ public class LoginController {
     private UserMapper userMapper;
 
     @RequestMapping("/login")
-    public JsonResult toLogin(/*@RequestBody User user,*/String username,String password,HttpServletRequest request) {
+    public JsonResult toLogin( User user,String username,String password,HttpServletRequest request) {
 
-        if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
+        if (StringUtils.isBlank(user.getUsername()) || StringUtils.isBlank(user.getPassword())) {
             return JsonResult.fail("用户名和密码不能为空!");
         }
         // 得到加密后的密码
-        String passwordEncrypt = MD5Utils.encrypt(username, password);
+        String passwordEncrypt = MD5Utils.encrypt(user.getUsername(), user.getPassword());
         // 数据库中的密码
-        User currentUser = this.userService.selectUserByUsername(username);
+        User currentUser = this.userService.selectUserByUsername(user.getUsername());
         if (currentUser == null) {
             return JsonResult.fail("用户名或者密码不正确！");
         }
