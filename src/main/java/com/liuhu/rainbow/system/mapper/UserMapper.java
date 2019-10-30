@@ -25,4 +25,14 @@ public interface UserMapper extends BaseMapper<User> {
     User selectUserByUsername(String username);
 
     IPage<User> findAllByPage(Page<User> page);
+    /**
+     * 删除用户角色表关联的角色
+     * @param userId 用户ID
+     * @return void
+     * @author melo、lh
+     * @createTime 2019-10-30 11:20:05
+     */
+    void deleteUserRoles(String userId);
+
+    void insertUserRoles(String[] roleIds, String userId);
 }

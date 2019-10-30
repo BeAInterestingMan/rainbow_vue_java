@@ -19,4 +19,6 @@ public class RainbowConstant {
     /** 根菜单*/
     public static final String ROOT_MENU = "0";
 
+    /** 系统管理员 具有最高权限*/
+    public static final String SYSTEM_ADMIN = "admin";
 }

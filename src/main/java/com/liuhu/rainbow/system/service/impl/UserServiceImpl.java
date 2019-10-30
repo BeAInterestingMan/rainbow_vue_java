@@ -1,5 +1,6 @@
 package com.liuhu.rainbow.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liuhu.rainbow.system.authentication.jwt.JWTToken;
@@ -11,9 +12,11 @@ import com.liuhu.rainbow.system.mapper.RoleMapper;
 import com.liuhu.rainbow.system.mapper.UserMapper;
 import com.liuhu.rainbow.system.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +60,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         userIngoMap.put("roles",roles);
         userIngoMap.put("user",user);
         return userIngoMap;
+    }
+
+    @Override
+    public List<User> selectUserList(String nickname) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        if(StringUtils.isNotBlank(nickname)){
+            queryWrapper.eq("NICKNAME",nickname);
+        }
+        List<User> userList = this.userMapper.selectList(queryWrapper);
+
+        List<User> users = new ArrayList<>();
+        for (User user: userList) {
+            List<Role> roleList = this.roleMapper.selectRoleListByUsername(user.getUsername());
+            if(null != roleList && roleList.size() > 0){
+                user.setRoles(roleList);
+                users.add(user);
+            }
+        }
+        return users;
+    }
+
+    @Override
+    public void saveUserRoles(String[] roleIds, String userId) {
+        // 1 删除用户原有的角色
+        this.userMapper.deleteUserRoles(userId);
+        // 2 保存用户跟新的角色
+        this.userMapper.insertUserRoles(roleIds,userId);
     }
 
   /*  @Override

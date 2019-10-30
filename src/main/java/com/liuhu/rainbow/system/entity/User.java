@@ -1,5 +1,6 @@
 package com.liuhu.rainbow.system.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 用户表
@@ -108,4 +110,15 @@ public class User extends Model<User> {
      * 修改时间
      */
     private Date updateTime;
+
+    /**
+     * 昵称
+     */
+    private String nickname;
+
+    /**
+     * 角色集合   @TableField(exist = false) 该注解表示不和数据库字段映射
+     */
+    @TableField(exist = false)
+    private List<Role> roles;
 }

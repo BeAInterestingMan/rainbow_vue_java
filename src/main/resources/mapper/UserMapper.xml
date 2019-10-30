@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="com.liuhu.rainbow.system.entity.User">
         <id column="ID" property="id" />
         <result column="USERNAME" property="username" />
+        <result column="NICKNAME" property="nickname" />
         <result column="PASSWORD" property="password" />
         <result column="EMAIL" property="email" />
         <result column="MOBILE" property="mobile" />
@@ -35,4 +36,16 @@
          SELECT * FROM sys_user
      </select>
 
+    <!-- 删除用户角色表关联的角色Id-->
+    <delete id="deleteUserRoles" parameterType="string">
+       DELETE FROM sys_user_role where user_id =  #{userId}
+    </delete>
+
+<!--保存用户-->
+    <insert id="insertUserRoles">
+        INSERT INTO sys_user_role (role_id,user_id) VALUES
+        <foreach collection="roleIds" separator="," item="roleId">
+            (#{roleId},#{userId})
+        </foreach>
+    </insert>
 </mapper>
