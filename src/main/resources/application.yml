@@ -47,6 +47,7 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     jdbc-type-for-null: null
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.liuhu.rainbow.system.entity

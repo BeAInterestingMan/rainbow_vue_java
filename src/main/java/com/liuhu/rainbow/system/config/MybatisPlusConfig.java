@@ -6,24 +6,26 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * MybatisPlus ÅäÖÃÀà
- * @author melo¡¢lh
+ * MybatisPlusé…ç½®ç±»
+ * @author meloã€lh
  * @createTime 2019-10-22 15:06:56
  */
 @Configuration
-@MapperScan("com.liuhu.rainbow.system.mapper")  // ÕâÀïÌí¼ÓMapperScan Æô¶¯Àà¾Í²»ÒªĞ´ÁË  ·´Ö®ÒàÈ»
+@MapperScan("com.liuhu.rainbow.system.mapper")  // å¦‚æœå¯åŠ¨ç±»å·²ç»é…ç½®äº† è¿™é‡Œæ— éœ€é…ç½®
 public class MybatisPlusConfig {
 
+
      /**
-      * ÅäÖÃMybatis×Ô¼ºµÄ·ÖÒ³²å¼ş
+      * ä½¿ç”¨è‡ªå®šä¹‰çš„åˆ†é¡µæ’ä»¶
       * @return com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor
-      * @author melo¡¢lh
-      * @createTime 2019-10-22 15:07:28
+      * @author meloã€lh
+      * @createTime 2019-11-01 12:04:39
       */
-    @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
-        return paginationInterceptor;
-    }
+     @Bean
+     public PaginationInterceptor paginationInterceptor() {
+         PaginationInterceptor page = new PaginationInterceptor();
+         page.setDialectType("mysql");
+         return page;
+     }
 
 }

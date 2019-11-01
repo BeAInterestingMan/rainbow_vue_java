@@ -1,12 +1,8 @@
 package com.liuhu.rainbow.system.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liuhu.rainbow.system.Constant.RainbowConstant;
 import com.liuhu.rainbow.system.authentication.jwt.JWTToken;
 import com.liuhu.rainbow.system.authentication.jwt.JWTUtil;
-import com.liuhu.rainbow.system.config.PageRequest;
 import com.liuhu.rainbow.system.entity.User;
 import com.liuhu.rainbow.system.mapper.UserMapper;
 import com.liuhu.rainbow.system.redis.service.RedisService;
@@ -14,9 +10,7 @@ import com.liuhu.rainbow.system.service.IUserService;
 import com.liuhu.rainbow.system.util.MD5Utils;
 import com.liuhu.rainbow.system.vo.JsonResult;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -87,23 +81,5 @@ public class LoginController {
         this.redisService.set(RainbowConstant.RAINBOW_TOKEN+token+"."+RainbowConstant.EXPIRE_TIME , token,RainbowConstant.EXPIRE_TIME);
     }
 
-    @RequestMapping("/student")
-    public JsonResult getStudent(){
-        return JsonResult.ok("学生管理!");
-    }
 
-    @RequestMapping("/st")
-    @RequiresPermissions("system:apexxaxa111")
-    public JsonResult getStudentAa(){
-        return JsonResult.ok("学生1111管理!");
-    }
-
-
-    @RequestMapping("/list")
-    public Object getPage(PageRequest pageRequest){
-        IPage<User> page = new Page<>(pageRequest.getPageNum(), pageRequest.getPageSize());
-        QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.orderByAsc("ID");
-      return   this.userMapper.selectPage(page,wrapper);
-    }
 }

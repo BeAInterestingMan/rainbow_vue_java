@@ -1,19 +1,15 @@
 package com.liuhu.rainbow.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.liuhu.rainbow.system.Constant.RainbowConstant;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liuhu.rainbow.system.authentication.jwt.JWTToken;
 import com.liuhu.rainbow.system.authentication.shiro.ShiroUtils;
-import com.liuhu.rainbow.system.config.PageRequest;
 import com.liuhu.rainbow.system.entity.Role;
 import com.liuhu.rainbow.system.entity.User;
 import com.liuhu.rainbow.system.mapper.MenuMapper;
 import com.liuhu.rainbow.system.mapper.RoleMapper;
 import com.liuhu.rainbow.system.mapper.UserMapper;
 import com.liuhu.rainbow.system.service.IUserService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liuhu.rainbow.system.util.CommonUtils;
 import com.liuhu.rainbow.system.util.MD5Utils;
 import org.apache.commons.lang3.StringUtils;
@@ -139,13 +135,4 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         String username = ShiroUtils.getUsername();
         return this.userMapper.selectOne(queryWrapper.eq("USERNAME",username));
     }
-
-  /*  @Override
-    public IPage<User> findAllByPage(PageRequest pageRequest) {
-        Page<User> page = new Page<>();
-        page.setCurrent(pageRequest.getPageNum());
-        page.setSize(pageRequest.getPageSize());
-        page.setRecords(this.baseMapper.findAllByPage(page))
-        return ;
-    }*/
 }

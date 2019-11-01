@@ -27,4 +27,12 @@
     </select>
 
 
+    <select id="selectRoleWithPage" parameterType="map" resultMap="BaseResultMap">
+      SELECT * FROM sys_role where
+        1 = 1
+        <if test="name != null and name != ''">
+            <![CDATA[and name like  CONCAT('%',#{name},'%') ]]>
+        </if>
+    </select>
+
 </mapper>

@@ -1,10 +1,13 @@
 package com.liuhu.rainbow.system.mapper;
 
-import com.liuhu.rainbow.system.entity.Role;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.liuhu.rainbow.system.entity.Role;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 角色持久层
@@ -22,4 +25,14 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @createTime 2019-10-21 15:05:31
      */
     List<Role> selectRoleListByUsername(String username);
+
+    /**
+     *  角色分页查询
+     * @param roleIPage 分页对象
+     * @param name  查询参数
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.liuhu.rainbow.system.entity.Role>
+     * @author melo、lh
+     * @createTime 2019-11-01 14:35:20
+     */
+    IPage<Role> selectRoleWithPage(IPage<Role> roleIPage, @Param("name") String name);
 }

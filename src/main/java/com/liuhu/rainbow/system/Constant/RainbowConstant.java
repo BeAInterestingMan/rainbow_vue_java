@@ -31,6 +31,7 @@ public class RainbowConstant {
     /** 页面状态为查看*/
     public static final String PAGE_VIEW = "view";
 
-
+    /** 分页总记录数*/
+    public static final String TOTAL_COUNT = "total";
 
 }
