@@ -33,6 +33,21 @@ public interface UserMapper extends BaseMapper<User> {
      * @createTime 2019-10-30 11:20:05
      */
     void deleteUserRoles(String userId);
-
+    /**
+     * 保存用户角色
+     * @param roleIds 角色集合
+     * @param userId 用户ID
+     * @return void
+     * @author melo、lh
+     * @createTime 2019-10-31 11:05:58
+     */
     void insertUserRoles(String[] roleIds, String userId);
+    /**
+     * 新增时授予用户游客角色
+     * @param id 用户ID
+     * @return void
+     * @author melo、lh
+     * @createTime 2019-10-31 11:06:25
+     */
+    void insertTouristsRole(String id);
 }

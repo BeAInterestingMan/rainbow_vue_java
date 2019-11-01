@@ -4,10 +4,12 @@ package com.liuhu.rainbow.system.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.liuhu.rainbow.system.Constant.RainbowConstant;
 import com.liuhu.rainbow.system.authentication.shiro.ShiroUtils;
+import com.liuhu.rainbow.system.entity.CheckPassword;
 import com.liuhu.rainbow.system.entity.Role;
 import com.liuhu.rainbow.system.entity.User;
 import com.liuhu.rainbow.system.service.IRoleService;
 import com.liuhu.rainbow.system.service.IUserService;
+import com.liuhu.rainbow.system.util.MD5Utils;
 import com.liuhu.rainbow.system.vo.JsonResult;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -130,6 +132,56 @@ public class UserController {
         return JsonResult.ok("更新用户状态成功!");
     }
 
+    /**
+     * 保存用户
+     * @param user 用户
+     * @return com.liuhu.rainbow.system.vo.JsonResult
+     * @author melo、lh
+     * @createTime 2019-10-31 10:45:27
+     */
+     @RequestMapping("/saveUser")
+     public JsonResult saveOrUpdate(User user){
+         boolean flag = this.userService.saveOrUpdateUser(user);
+         if(flag){
+             return JsonResult.ok("新增用户信息成功,初始密码为password");
+         }else{
+             return JsonResult.ok("修改用户信息成功");
+         }
+     }
+    /**
+     *  通过Id 得到一个用户
+     * @param id
+     * @return com.liuhu.rainbow.system.vo.JsonResult
+     * @author melo、lh
+     * @createTime 2019-10-31 16:33:38
+     */
+     @RequestMapping("/getOneUser")
+     public JsonResult getOneUser(String id){
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+         User user = this.userService.getBaseMapper().selectOne(queryWrapper.eq("ID", id));
+         return JsonResult.ok().addData(user);
+     }
 
-
+     /**
+      * 校验密码是否正确
+      * @param checkPassword 校验密码
+      * @return com.liuhu.rainbow.system.vo.JsonResult
+      * @author melo、lh
+      * @createTime 2019-10-31 16:33:57
+      */
+     @PutMapping("/updateUserPassword")
+     public JsonResult updatePassWord( CheckPassword checkPassword){
+         User user = this.userService.getBaseMapper().selectOne(new QueryWrapper<User>().eq("ID", checkPassword.getId()));
+         String password = MD5Utils.encrypt(user.getUsername(), checkPassword.getOldPassword());
+         if(!password.equals(user.getPassword())){
+               return JsonResult.fail("旧密码不正确!");
+         }
+         if(!checkPassword.getNewPassWord().equals(checkPassword.getCheckPassPassword())){
+             return JsonResult.fail("两次密码不一致!");
+         }
+         String newPassword = MD5Utils.encrypt(user.getUsername(), checkPassword.getNewPassWord());
+         user.setPassword(newPassword);
+         this.userService.updateById(user);
+         return JsonResult.ok("更改密码成功,请重新登陆!");
+     }
 }

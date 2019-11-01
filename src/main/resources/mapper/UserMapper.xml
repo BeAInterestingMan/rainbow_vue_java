@@ -48,4 +48,15 @@
             (#{roleId},#{userId})
         </foreach>
     </insert>
+    <!--新增时授予用户游客角色-->
+    <insert id="insertTouristsRole">
+        INSERT INTO sys_user_role (
+        USER_ID,
+        ROLE_ID
+        )VALUES (
+        #{id},
+        '369'
+        )
+    </insert>
+
 </mapper>

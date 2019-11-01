@@ -56,5 +56,4 @@ mybatis-plus:
 
 rainbow:
   shiro:
-
     anonUrl: /login,/logout/**,

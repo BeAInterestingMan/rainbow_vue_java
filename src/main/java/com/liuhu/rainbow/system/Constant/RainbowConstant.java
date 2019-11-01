@@ -21,4 +21,16 @@ public class RainbowConstant {
 
     /** 系统管理员 具有最高权限*/
     public static final String SYSTEM_ADMIN = "admin";
+
+    /** 页面状态为编辑*/
+    public static final String PAGE_EDIT = "edit";
+
+    /** 页面状态为新增*/
+    public static final String PAGE_ADD = "add";
+
+    /** 页面状态为查看*/
+    public static final String PAGE_VIEW = "view";
+
+
+
 }

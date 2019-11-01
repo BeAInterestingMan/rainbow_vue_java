@@ -3,6 +3,7 @@ package com.liuhu.rainbow.system.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.liuhu.rainbow.system.authentication.jwt.JWTToken;
 import com.liuhu.rainbow.system.entity.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -48,13 +49,21 @@ public interface IUserService extends IService<User> {
      * @createTime 2019-10-30 11:16:51
      */
     void saveUserRoles(String[] roleIds, String userId);
-    /* *//**
-     * 分页查询
-     * @param pageRequest
-     * @param params
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.liuhu.rainbow.system.entity.User>
+
+    /**
+     *  保存用户
+     * @param user
+     * @return void
      * @author melo、lh
-     * @createTime 2019-10-22 15:28:02
-     *//*
-    IPage<User> findAllByPage(PageRequest pageRequest);*/
+     * @createTime 2019-10-31 10:45:59
+     */
+     boolean saveOrUpdateUser(@Param("user") User user);
+
+     /**
+      * 得到当前正在登陆的用户
+      * @return com.liuhu.rainbow.system.entity.User
+      * @author melo、lh
+      * @createTime 2019-10-31 10:49:56
+      */
+     User getCurrentUser();
 }
