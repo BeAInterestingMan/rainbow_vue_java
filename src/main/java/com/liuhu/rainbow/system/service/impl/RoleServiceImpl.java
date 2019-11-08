@@ -10,16 +10,16 @@ import com.liuhu.rainbow.system.mapper.RoleMapper;
 import com.liuhu.rainbow.system.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 角色业务层实体类
  * @author melo、lh
  * @createTime 2019-10-21 13:35:09
  */
-
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
@@ -48,6 +48,14 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
             throw  new RainbowException("拉取角色信息失败");
         }
         return roleIPage;
+    }
+
+    @Override
+    public void updateRoleMenu(String[] menuIds, String roleId) {
+        // 1 先删除用户原有的角色
+        this.baseMapper.deleteRoleMenusByRoleId(roleId);
+        // 2 再去更新本次赋予的角色
+        this.baseMapper.insertRoleMenu(menuIds,roleId);
     }
 
 

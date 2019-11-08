@@ -33,5 +33,13 @@ public interface IRoleService extends IService<Role> {
      * @createTime 2019-11-01 14:34:31
      */
     IPage<Role> selectRoleWithPage(Integer currentPage, Integer pageSize,String name);
-
+    /**
+     * 更新用户所属菜单资源
+     * @param menuIds 菜单ID集合
+     * @param roleId 角色Id
+     * @return void
+     * @author melo、lh
+     * @createTime 2019-11-08 16:13:37
+     */
+    void updateRoleMenu(String[] menuIds, String roleId);
 }

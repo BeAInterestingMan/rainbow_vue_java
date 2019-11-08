@@ -6,7 +6,7 @@ server:
 spring:
   datasource:
     username: root
-    password: 123456
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://129.211.60.109:3306/rainbow?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
     type: com.alibaba.druid.pool.DruidDataSource

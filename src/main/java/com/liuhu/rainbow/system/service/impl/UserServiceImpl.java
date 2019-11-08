@@ -15,6 +15,7 @@ import com.liuhu.rainbow.system.util.MD5Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -23,7 +24,7 @@ import java.util.*;
  * @author melo、lh
  * @createTime 2019-10-21 13:35:09
  */
-
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 

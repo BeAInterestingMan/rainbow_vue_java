@@ -50,4 +50,41 @@
         ORDER BY
           m.SORT
     </select>
+
+
+    <select id="getAllMenusWithTree" parameterType="string" resultMap="BaseResultMap">
+  SELECT
+          m.id,  m.url as PATH,m.MENU_NAME as name ,m.PARENT_ID,m.COMPONENT,m.ICON as ICONCLS,m.id
+        FROM
+            sys_menu m
+        WHERE
+            m.type &lt;&gt; 1
+            AND m.status ='0'
+        AND m.ID IN (
+            SELECT DISTINCT
+                rm.menu_id
+            FROM
+                sys_role_menu rm
+            LEFT JOIN sys_role r ON (rm.role_id = r.ID)
+            LEFT JOIN sys_user_role ur ON (ur.role_id = r.ID)
+            LEFT JOIN sys_user u ON (u.ID = ur.user_id)
+            WHERE
+
+               r.status = '0' AND u.status = '0'
+        )
+        ORDER BY
+          m.SORT
+    </select>
+
+
+
+    <select id="getRoleMenus" parameterType="string" resultType="string">
+            SELECT
+                srm.menu_id
+            FROM
+                sys_role sr
+            LEFT JOIN sys_role_menu srm ON sr.id = srm.role_id
+            WHERE
+                srm.ROLE_ID = #{roleId}
+    </select>
 </mapper>

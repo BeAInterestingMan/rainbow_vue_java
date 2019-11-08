@@ -3,11 +3,13 @@ package com.liuhu.rainbow.system.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liuhu.rainbow.system.Constant.RainbowConstant;
 import com.liuhu.rainbow.system.entity.Menu;
+import com.liuhu.rainbow.system.exception.RainbowException;
 import com.liuhu.rainbow.system.mapper.MenuMapper;
 import com.liuhu.rainbow.system.service.IMenuService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.List;
  * @author melo、lh
  * @createTime 2019-10-21 13:35:09
  */
-
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IMenuService {
 
@@ -37,27 +39,67 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     @Override
     public List<Menu> getUserMenu(String username) {
-        // 得到所有菜单
+        // 得到用户所有菜单
         List<Menu> menus = this.menuMapper.selectMenuListByUsername(username);
         // 最终的菜单数据
         List<Menu> rootMuns = new ArrayList<>();
+        return getTreeMenus(menus, rootMuns);
+    }
 
-        // 得到根菜单
-        for (Menu menu: menus) {
-            if(StringUtils.isBlank(menu.getParentId()) || RainbowConstant.ROOT_MENU.equals(menu.getParentId())){
-                rootMuns.add(menu);
-            }
+    @Override
+    public List<Menu> getAllMenusWithTree() {
+        // 得到所有菜单
+        List<Menu> allMenusWithTree = this.menuMapper.getAllMenusWithTree();
+        // 最终的菜单数据
+        List<Menu> rootMenus = new ArrayList<>();
+        return getTreeMenus(allMenusWithTree, rootMenus);
+    }
+
+    @Override
+    public List<String> getRoleMenus(String roleId) {
+        List<String> roleMenuIds = null;
+        try {
+            roleMenuIds = this.menuMapper.getRoleMenus(roleId);
+        }catch (Exception e){
+            throw new RainbowException("获得角色菜单资源失败!");
         }
-        // 遍历根菜单
-        for (Menu menu: rootMuns) {
-            //得到该根菜单所属的子菜单
-            List<Menu> childMenus = this.getChildMenu(menu.getId(), menus);
-            menu.setChildren(childMenus);
-        }
-        return rootMuns;
+       return roleMenuIds;
     }
 
 
+    /**
+      * 得到树形菜单数据集合
+      * @param menus 查询出的所有菜单集合
+      * @param rootMenus 最终返回的菜单集合
+      * @return java.util.List<com.liuhu.rainbow.system.entity.Menu>
+      * @author melo、lh
+      * @createTime 2019-11-04 10:18:56
+      */
+      public List<Menu> getTreeMenus(List<Menu> menus, List<Menu> rootMenus){
+          // 得到根菜单
+          for (Menu menu: menus) {
+              if(StringUtils.isBlank(menu.getParentId()) || RainbowConstant.ROOT_MENU.equals(menu.getParentId())){
+                  rootMenus.add(menu);
+              }
+          }
+          // 遍历根菜单
+          for (Menu menu: rootMenus) {
+              //得到该根菜单所属的子菜单
+              List<Menu> childMenus = this.getChildMenu(menu.getId(), menus);
+              menu.setChildren(childMenus);
+          }
+          return rootMenus;
+      }
+
+
+    /**
+     * 得到子菜单数据
+     * @param parentsId 父菜单ID
+     * @param menus 所有菜单集合
+     * @return java.util.List<com.liuhu.rainbow.system.entity.Menu>
+     * @author melo、lh
+     * @createTime 2019-11-04 10:17:28
+     */
     public List<Menu> getChildMenu(String parentsId,List<Menu> menus) {
         //子菜单
         List<Menu> childMenus =  new ArrayList<>();

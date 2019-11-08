@@ -35,4 +35,16 @@
         </if>
     </select>
 
+
+    <delete id="deleteRoleMenusByRoleId" parameterType="string">
+        DELETE FROM sys_role_menu  WHERE role_id = #{roleId}
+    </delete>
+
+    <insert id="insertRoleMenu">
+          INSERT INTO sys_role_menu(role_id,menu_id) values
+          <foreach collection="menuIds" item="menuId" separator=",">
+              (#{roleId},#{menuId})
+          </foreach>
+    </insert>
+
 </mapper>

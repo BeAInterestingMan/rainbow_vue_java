@@ -24,7 +24,6 @@ public interface UserMapper extends BaseMapper<User> {
      */
     User selectUserByUsername(String username);
 
-    IPage<User> findAllByPage(Page<User> page);
     /**
      * 删除用户角色表关联的角色
      * @param userId 用户ID

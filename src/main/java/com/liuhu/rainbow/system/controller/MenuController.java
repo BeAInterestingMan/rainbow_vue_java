@@ -1,14 +1,15 @@
 package com.liuhu.rainbow.system.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.liuhu.rainbow.system.entity.Menu;
+import com.liuhu.rainbow.system.entity.Role;
 import com.liuhu.rainbow.system.mapper.MenuMapper;
 import com.liuhu.rainbow.system.service.IMenuService;
+import com.liuhu.rainbow.system.service.IRoleService;
 import com.liuhu.rainbow.system.vo.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class MenuController {
     @Autowired
     private IMenuService menuService;
 
+    @Autowired
+    private IRoleService roleService;
+
     /**
      * 后台组装vueRouter动态菜单数据
      * @param username 用户名
@@ -41,5 +45,38 @@ public class MenuController {
         return JsonResult.ok().addData(menuList);
     }
 
+    /**
+     * 返回角色绑定资源的数据 （菜单树数据 角色所属菜单的ID）
+     * @param roleId 角色ID
+     * @return com.liuhu.rainbow.system.vo.JsonResult
+     * @author melo、lh
+     * @createTime 2019-11-08 15:47:13
+     */
+    @RequestMapping("menuTreeForRole")
+    public JsonResult menuTreeForRole(String roleId){
+        // 得到所有菜单数据 树结构封装
+        List<Menu> allMenusWithTree = this.menuService.getAllMenusWithTree();
+        // 得到角色所拥有的菜单ID （用于tree默认选中）
+        List<String> roleMenusId = this.menuService.getRoleMenus(roleId);
+        return JsonResult.ok().add("treeData",allMenusWithTree).add("menuIds",roleMenusId);
+    }
 
+    /**
+     * 更新角色所属菜单
+     * @param menuIds 角色所属菜单ID集合
+     * @param roleId 角色ID
+     * @return com.liuhu.rainbow.system.vo.JsonResult
+     * @author melo、lh
+     * @createTime 2019-11-08 16:19:11
+     */
+    @PostMapping("/updateRoleMenu")
+    public JsonResult updateRoleMenu(String[] menuIds,String roleId){
+        try {
+            this.roleService.updateRoleMenu(menuIds,roleId);
+            return JsonResult.ok("更新角色菜单成功!");
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return JsonResult.ok("更新角色菜单失败!");
+        }
+    }
 }

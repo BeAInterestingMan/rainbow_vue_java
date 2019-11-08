@@ -35,4 +35,22 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @createTime 2019-11-01 14:35:20
      */
     IPage<Role> selectRoleWithPage(IPage<Role> roleIPage, @Param("name") String name);
+
+    /**
+     * 增加角色所属资源
+     * @param menuIds 资源ID
+     * @param roleId 角色名称
+     * @return void
+     * @author melo、lh
+     * @createTime 2019-11-08 16:12:07
+     */
+    void insertRoleMenu(@Param("menuIds") String[] menuIds, @Param("roleId") String roleId);
+   /**
+    * 通过角色ID删除角色所属资源
+    * @param roleId 角色ID
+    * @return void
+    * @author melo、lh
+    * @createTime 2019-11-08 16:08:56
+    */
+    void deleteRoleMenusByRoleId(String roleId);
 }
