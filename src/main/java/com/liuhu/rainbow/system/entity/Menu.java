@@ -62,9 +62,11 @@ public class Menu extends Model<Menu> {
      */
     private Long sort;
 
+    /**
+     * vue-router路径
+     */
     @TableField(exist = false)
     private String path;
-
 
 
     /**

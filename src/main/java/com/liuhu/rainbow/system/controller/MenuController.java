@@ -1,9 +1,9 @@
 package com.liuhu.rainbow.system.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.liuhu.rainbow.system.Constant.RainbowConstant;
 import com.liuhu.rainbow.system.entity.Menu;
-import com.liuhu.rainbow.system.entity.Role;
 import com.liuhu.rainbow.system.mapper.MenuMapper;
 import com.liuhu.rainbow.system.service.IMenuService;
 import com.liuhu.rainbow.system.service.IRoleService;
@@ -78,5 +78,29 @@ public class MenuController {
             ex.printStackTrace();
             return JsonResult.ok("更新角色菜单失败!");
         }
+    }
+
+    /**
+     * 菜单管理左侧树数据
+     * @return com.liuhu.rainbow.system.vo.JsonResult
+     * @author melo、lh
+     * @createTime 2019-11-12 14:25:32
+     */
+    @GetMapping("/getAllMenus")
+    public JsonResult getAllMenus(){
+        List<Menu> menuTree = this.menuService.getAllMenusWithTree();
+        return JsonResult.ok().addData(menuTree);
+    }
+
+
+    @GetMapping("/getAllMenusTable")
+    public JsonResult getAllMenusTable(
+            @RequestParam(defaultValue = "1") Integer currentPage,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam String name  ,
+            @RequestParam String parentId
+    ){
+        IPage<Menu> menuIPage = this.menuService.getAllMenusTable(currentPage, pageSize, name, parentId);
+        return JsonResult.ok().addData(menuIPage.getRecords()).add(RainbowConstant.TOTAL_COUNT,menuIPage.getTotal());
     }
 }

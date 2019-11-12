@@ -1,8 +1,11 @@
 package com.liuhu.rainbow.system.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liuhu.rainbow.system.Constant.RainbowConstant;
 import com.liuhu.rainbow.system.entity.Menu;
+import com.liuhu.rainbow.system.entity.Role;
 import com.liuhu.rainbow.system.exception.RainbowException;
 import com.liuhu.rainbow.system.mapper.MenuMapper;
 import com.liuhu.rainbow.system.service.IMenuService;
@@ -64,6 +67,19 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             throw new RainbowException("获得角色菜单资源失败!");
         }
        return roleMenuIds;
+    }
+
+    @Override
+    public IPage<Menu> getAllMenusTable(Integer currentPage, Integer pageSize, String name, String parentId) {
+        IPage<Menu> menuPage = null;
+       try {
+          Page<Menu> page = new Page<>(currentPage,pageSize);
+           menuPage = this.menuMapper.selectMenuListByParam(page,name, parentId);
+           }catch (Exception e){
+               throw  new RainbowException("菜单分页查询失败");
+           }
+
+        return menuPage;
     }
 
 

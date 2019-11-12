@@ -1,7 +1,9 @@
 package com.liuhu.rainbow.system.mapper;
 
-import com.liuhu.rainbow.system.entity.Menu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.liuhu.rainbow.system.entity.Menu;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -36,4 +38,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @createTime 2019-11-08 15:01:48
      */
     List<String> getRoleMenus(String roleId);
+
+
+    IPage<Menu> selectMenuListByParam(IPage<Menu> menuIPage,@Param("name") String name, @Param("parentId") String parentId);
 }

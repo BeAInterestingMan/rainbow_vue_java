@@ -66,4 +66,13 @@ public interface IUserService extends IService<User> {
       * @createTime 2019-10-31 10:49:56
       */
      User getCurrentUser();
+
+    /**
+     * 查找角色绑定的用户
+     * @param id 角色ID
+     * @return java.util.List<com.liuhu.rainbow.system.entity.User>
+     * @author melo、lh
+     * @createTime 2019-11-12 10:52:17
+     */
+    List<User> findRoleWithUser(String id);
 }

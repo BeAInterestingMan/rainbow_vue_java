@@ -6,6 +6,7 @@ import com.liuhu.rainbow.system.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,4 +50,13 @@ public interface UserMapper extends BaseMapper<User> {
      * @createTime 2019-10-31 11:06:25
      */
     void insertTouristsRole(String id);
+
+   /**
+    * 查找角色绑定的用户
+    * @param id 角色ID
+    * @return java.util.List<com.liuhu.rainbow.system.entity.User>
+    * @author melo、lh
+    * @createTime 2019-11-12 10:55:57
+    */
+    List<User> findRoleWithUser(String id);
 }

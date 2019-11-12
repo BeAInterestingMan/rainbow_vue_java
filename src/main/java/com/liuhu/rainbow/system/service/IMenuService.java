@@ -1,5 +1,6 @@
 package com.liuhu.rainbow.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.liuhu.rainbow.system.entity.Menu;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -44,4 +45,6 @@ public interface IMenuService extends IService<Menu> {
      * @createTime 2019-11-08 15:02:00
      */
     List<String> getRoleMenus(String roleId);
+
+    IPage<Menu> getAllMenusTable(Integer currentPage, Integer pageSize, String name, String parentId);
 }

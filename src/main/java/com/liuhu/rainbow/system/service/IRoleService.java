@@ -3,9 +3,9 @@ package com.liuhu.rainbow.system.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.liuhu.rainbow.system.entity.Role;
+import com.liuhu.rainbow.system.entity.User;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 角色业务层接口
@@ -42,4 +42,22 @@ public interface IRoleService extends IService<Role> {
      * @createTime 2019-11-08 16:13:37
      */
     void updateRoleMenu(String[] menuIds, String roleId);
+    /**
+     *  角色保存方法
+     * @param role 角色实体
+     * @return boolean
+     * @author melo、lh
+     * @createTime 2019-11-12 09:59:48
+     */
+    boolean saveOrUpdateRole(Role role);
+    /**
+     * 删除角色
+     * @param id 角色ID
+     * @return void
+     * @author melo、lh
+     * @createTime 2019-11-12 10:50:22
+     */
+    void deleteRoleById(String id);
+
+
 }

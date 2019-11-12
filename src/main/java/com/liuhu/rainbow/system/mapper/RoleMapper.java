@@ -3,6 +3,7 @@ package com.liuhu.rainbow.system.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.liuhu.rainbow.system.entity.Role;
+import com.liuhu.rainbow.system.entity.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -53,4 +54,5 @@ public interface RoleMapper extends BaseMapper<Role> {
     * @createTime 2019-11-08 16:08:56
     */
     void deleteRoleMenusByRoleId(String roleId);
+
 }

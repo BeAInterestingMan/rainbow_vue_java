@@ -59,4 +59,10 @@
         )
     </insert>
 
+    <select id="findRoleWithUser" resultMap="BaseResultMap" parameterType="string">
+       SELECT su.* FROM sys_user su  JOIN sys_user_role sur on
+            su.id = sur.USER_ID
+            where  sur.ROLE_ID = #{id}
+    </select>
+
 </mapper>

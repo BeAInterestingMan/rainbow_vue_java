@@ -12,6 +12,7 @@
         <result column="PATH" property="path" />
         <result column="NAME" property="name" />
         <result column="ICONCLS" property="iconCls" />
+        <result column="COMPONENT" property="component" />
 
         <result column="PERMISSION" property="permission" />
         <result column="ICON" property="icon" />
@@ -46,6 +47,37 @@
             WHERE
                 u.username = #{username}
                 AND r.status = '0' AND u.status = '0'
+        )
+        ORDER BY
+          m.SORT
+    </select>
+
+
+    <select id="selectMenuListByParam" parameterType="string" resultMap="BaseResultMap">
+  SELECT
+            m.url as PATH,m.MENU_NAME as name ,m.PARENT_ID,m.COMPONENT,m.ICON as ICONCLS,m.id
+        ,m.CREATOR_NAME,m.CREATE_TIME,m.STATUS,m.TYPE,m.PERMISSION
+        FROM
+            sys_menu m
+        WHERE
+            m.type &lt;&gt; 1
+            AND m.status ='0'
+        AND m.ID IN (
+            SELECT DISTINCT
+                rm.menu_id
+            FROM
+                sys_role_menu rm
+            LEFT JOIN sys_role r ON (rm.role_id = r.ID)
+            LEFT JOIN sys_user_role ur ON (ur.role_id = r.ID)
+            LEFT JOIN sys_user u ON (u.ID = ur.user_id)
+            WHERE
+                 r.status = '0' AND u.status = '0'
+                <if test="null != parentId and '' != parentId">
+                    AND m.PARENT_ID = #{parentId}
+                </if>
+                <if test="null != name and '' != name">
+                    <![CDATA[and m.MENU_NAME like  CONCAT('%',#{name},'%') ]]>
+                </if>
         )
         ORDER BY
           m.SORT

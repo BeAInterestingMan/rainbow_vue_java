@@ -6,6 +6,7 @@ import com.liuhu.rainbow.system.authentication.jwt.JWTToken;
 import com.liuhu.rainbow.system.authentication.shiro.ShiroUtils;
 import com.liuhu.rainbow.system.entity.Role;
 import com.liuhu.rainbow.system.entity.User;
+import com.liuhu.rainbow.system.exception.RainbowException;
 import com.liuhu.rainbow.system.mapper.MenuMapper;
 import com.liuhu.rainbow.system.mapper.RoleMapper;
 import com.liuhu.rainbow.system.mapper.UserMapper;
@@ -51,13 +52,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public Map<String, Object> getUserWithToken(JWTToken jwtToken, User user) {
         //1- 封装token
-        Map<String,Object> userIngoMap = new HashMap<>();
-        userIngoMap.put("token",jwtToken.getToken());
+        Map<String,Object> userInfoMap = new HashMap<>();
+        userInfoMap.put("token",jwtToken.getToken());
         // 2- 得到用户角色
         List<Role> roles = this.roleMapper.selectRoleListByUsername(user.getUsername());
-        userIngoMap.put("roles",roles);
-        userIngoMap.put("user",user);
-        return userIngoMap;
+        userInfoMap.put("roles",roles);
+        userInfoMap.put("user",user);
+        return userInfoMap;
     }
 
     @Override
@@ -93,6 +94,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         boolean flag;
         // 当前用户
         User currentUser = this.getCurrentUser();
+        // 新增
         if(StringUtils.isBlank(user.getId())){
              user.setStatus("0");
              String id = CommonUtils.getUUID();
@@ -106,6 +108,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
              this.userMapper.insert(user);
              flag = true;
         }else{
+            //修改
             this.updateEntity(user,currentUser);
             this.userMapper.updateById(user);
             flag =false;
@@ -135,5 +138,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         String username = ShiroUtils.getUsername();
         return this.userMapper.selectOne(queryWrapper.eq("USERNAME",username));
+    }
+
+    @Override
+    public List<User> findRoleWithUser(String id) {
+        try {
+            return this.baseMapper.findRoleWithUser(id);
+        }catch (Exception e){
+            throw new RainbowException("查找当前角色所属用户失败");
+        }
     }
 }
