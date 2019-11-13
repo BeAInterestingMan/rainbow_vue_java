@@ -92,7 +92,16 @@ public class MenuController {
         return JsonResult.ok().addData(menuTree);
     }
 
-
+   /**
+    * 菜单管理分页
+    * @param currentPage 当前页
+    * @param pageSize 分页数量
+    * @param name 菜单名称
+    * @param parentId 上级菜单ID
+    * @return com.liuhu.rainbow.system.vo.JsonResult
+    * @author melo、lh
+    * @createTime 2019-11-13 09:35:45
+    */
     @GetMapping("/getAllMenusTable")
     public JsonResult getAllMenusTable(
             @RequestParam(defaultValue = "1") Integer currentPage,
@@ -102,5 +111,28 @@ public class MenuController {
     ){
         IPage<Menu> menuIPage = this.menuService.getAllMenusTable(currentPage, pageSize, name, parentId);
         return JsonResult.ok().addData(menuIPage.getRecords()).add(RainbowConstant.TOTAL_COUNT,menuIPage.getTotal());
+    }
+
+    /**
+     * 保存菜单资源
+     * @param menu 资源实体
+     * @return com.liuhu.rainbow.system.vo.JsonResult
+     * @author melo、lh
+     * @createTime 2019-11-13 09:45:33
+     */
+    @PostMapping("/saveMenu")
+    public JsonResult saveOrUpdateMenu(Menu menu){
+        try {
+            boolean isAdd = this.menuService.saveOrUpdateMenu(menu);
+            if(isAdd){
+                return JsonResult.ok("新增资源成功!");
+            }else{
+                return JsonResult.ok("修改资源成功!");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return JsonResult.fail("保存资源失败!");
+        }
+
     }
 }

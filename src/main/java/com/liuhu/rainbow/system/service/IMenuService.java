@@ -45,6 +45,23 @@ public interface IMenuService extends IService<Menu> {
      * @createTime 2019-11-08 15:02:00
      */
     List<String> getRoleMenus(String roleId);
-
+    /**
+     * 菜单管理分页
+     * @param currentPage 当前页
+     * @param pageSize 分页数量
+     * @param name 菜单名称
+     * @param parentId 上级菜单ID
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.liuhu.rainbow.system.entity.Menu>
+     * @author melo、lh
+     * @createTime 2019-11-13 09:37:25
+     */
     IPage<Menu> getAllMenusTable(Integer currentPage, Integer pageSize, String name, String parentId);
+    /**
+     * 保存菜单
+     * @param menu 菜单实体
+     * @return void
+     * @author melo、lh
+     * @createTime 2019-11-13 09:38:42
+     */
+    boolean saveOrUpdateMenu(Menu menu);
 }

@@ -112,9 +112,11 @@ public class Menu extends Model<Menu> {
     private List<Menu> children;
 
     /** vue组件名称*/
+    @TableField(exist = false)
     private String name;
 
     /** vue菜单图标*/
+    @TableField(exist = false)
     private String iconCls;
 
 }

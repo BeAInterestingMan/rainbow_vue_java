@@ -6,15 +6,21 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liuhu.rainbow.system.Constant.RainbowConstant;
 import com.liuhu.rainbow.system.entity.Menu;
 import com.liuhu.rainbow.system.entity.Role;
+import com.liuhu.rainbow.system.entity.User;
 import com.liuhu.rainbow.system.exception.RainbowException;
 import com.liuhu.rainbow.system.mapper.MenuMapper;
 import com.liuhu.rainbow.system.service.IMenuService;
+import com.liuhu.rainbow.system.service.IUserService;
+import com.liuhu.rainbow.system.util.CommonUtils;
+import com.liuhu.rainbow.system.vo.JsonResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,6 +34,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     @Autowired
     private MenuMapper menuMapper;
+
+    @Autowired
+    private IUserService userService;
 
     @Override
     public List<Menu> selectMenuListByUsername(String username) {
@@ -82,6 +91,49 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         return menuPage;
     }
 
+    @Override
+    public boolean saveOrUpdateMenu(Menu menu) {
+        boolean isAdd = false;
+        if(StringUtils.isNotBlank(menu.getName())){
+            menu.setMenuName(menu.getName());
+        }
+        if(StringUtils.isNotBlank(menu.getPath())){
+            menu.setUrl(menu.getPath());
+        }
+        if(StringUtils.isNotBlank(menu.getIconCls())){
+            menu.setIcon(menu.getIconCls());
+        }
+        if(StringUtils.isNotBlank(menu.getName())){
+            menu.setMenuName(menu.getName());
+        }
+        User currentUser = this.userService.getCurrentUser();
+        if(StringUtils.isBlank(menu.getId())){
+            menu.setId(CommonUtils.getUUID());
+            this.createEntity(menu,currentUser);
+            this.updateEntity(menu,currentUser);
+            this.save(menu);
+            isAdd = true;
+        }else{
+            this.updateEntity(menu,currentUser);
+            this.updateById(menu);
+        }
+        return isAdd;
+    }
+    public void updateEntity(Menu menu, User currentUser) {
+        if (null != menu) {
+            menu.setUpdator(currentUser.getId());
+            menu.setUpdatorName(currentUser.getUsername());
+        }
+        menu.setUpdateTime(new Date());
+    }
+
+    public void createEntity(Menu menu,User currentUser) {
+        if (null != menu) {
+            menu.setCreator(currentUser.getId());
+            menu.setCreatorName(currentUser.getUsername());
+        }
+        menu.setCreateTime(new Date());
+    }
 
     /**
       * 得到树形菜单数据集合
@@ -135,4 +187,5 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         }
         return childMenus;
     }
+
 }
