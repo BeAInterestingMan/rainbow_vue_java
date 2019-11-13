@@ -64,4 +64,12 @@ public interface IMenuService extends IService<Menu> {
      * @createTime 2019-11-13 09:38:42
      */
     boolean saveOrUpdateMenu(Menu menu);
+    /**
+     * 删除菜单信息
+     * @param id 菜单ID
+     * @return void
+     * @author melo、lh
+     * @createTime 2019-11-13 13:59:05
+     */
+    void deleteMenus(String id);
 }

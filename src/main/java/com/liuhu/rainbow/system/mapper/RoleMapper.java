@@ -54,5 +54,12 @@ public interface RoleMapper extends BaseMapper<Role> {
     * @createTime 2019-11-08 16:08:56
     */
     void deleteRoleMenusByRoleId(String roleId);
-
+    /**
+     * 通过菜单ID查找绑定该菜单的角色
+     * @param id 菜单ID
+     * @return java.util.List<com.liuhu.rainbow.system.entity.Role>
+     * @author melo、lh
+     * @createTime 2019-11-13 14:03:32
+     */
+    List<Role> selectRoleByMenuId(String id);
 }

@@ -58,6 +58,12 @@ public interface IRoleService extends IService<Role> {
      * @createTime 2019-11-12 10:50:22
      */
     void deleteRoleById(String id);
-
-
+    /**
+     * 通过菜单ID查找绑定该菜单的角色
+     * @param id 菜单ID
+     * @return void
+     * @author melo、lh
+     * @createTime 2019-11-13 14:00:43
+     */
+    List<Role> selectRoleByMenuId(String id);
 }

@@ -10,6 +10,7 @@ import com.liuhu.rainbow.system.entity.User;
 import com.liuhu.rainbow.system.exception.RainbowException;
 import com.liuhu.rainbow.system.mapper.MenuMapper;
 import com.liuhu.rainbow.system.service.IMenuService;
+import com.liuhu.rainbow.system.service.IRoleService;
 import com.liuhu.rainbow.system.service.IUserService;
 import com.liuhu.rainbow.system.util.CommonUtils;
 import com.liuhu.rainbow.system.vo.JsonResult;
@@ -37,6 +38,10 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IRoleService roleService;
+
 
     @Override
     public List<Menu> selectMenuListByUsername(String username) {
@@ -85,6 +90,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
           Page<Menu> page = new Page<>(currentPage,pageSize);
            menuPage = this.menuMapper.selectMenuListByParam(page,name, parentId);
            }catch (Exception e){
+           e.printStackTrace();
                throw  new RainbowException("菜单分页查询失败");
            }
 
@@ -94,18 +100,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     @Override
     public boolean saveOrUpdateMenu(Menu menu) {
         boolean isAdd = false;
-        if(StringUtils.isNotBlank(menu.getName())){
-            menu.setMenuName(menu.getName());
-        }
-        if(StringUtils.isNotBlank(menu.getPath())){
-            menu.setUrl(menu.getPath());
-        }
-        if(StringUtils.isNotBlank(menu.getIconCls())){
-            menu.setIcon(menu.getIconCls());
-        }
-        if(StringUtils.isNotBlank(menu.getName())){
-            menu.setMenuName(menu.getName());
-        }
         User currentUser = this.userService.getCurrentUser();
         if(StringUtils.isBlank(menu.getId())){
             menu.setId(CommonUtils.getUUID());
@@ -119,6 +113,18 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         }
         return isAdd;
     }
+
+    @Override
+    public void deleteMenus(String id) {
+            // 查询该菜单是否已经绑定角色
+            List<Role> roles = this.roleService.selectRoleByMenuId(id);
+            if(null != roles && roles.size()>0){
+                throw new RainbowException("该菜单已被角色绑定，无法删除");
+            }
+            //  删除菜单信息
+            this.baseMapper.deleteById(id);
+       }
+
     public void updateEntity(Menu menu, User currentUser) {
         if (null != menu) {
             menu.setUpdator(currentUser.getId());

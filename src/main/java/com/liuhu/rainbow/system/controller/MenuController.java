@@ -1,6 +1,7 @@
 package com.liuhu.rainbow.system.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.liuhu.rainbow.system.Constant.RainbowConstant;
 import com.liuhu.rainbow.system.entity.Menu;
@@ -8,6 +9,7 @@ import com.liuhu.rainbow.system.mapper.MenuMapper;
 import com.liuhu.rainbow.system.service.IMenuService;
 import com.liuhu.rainbow.system.service.IRoleService;
 import com.liuhu.rainbow.system.vo.JsonResult;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -132,6 +134,53 @@ public class MenuController {
         }catch (Exception e){
             e.printStackTrace();
             return JsonResult.fail("保存资源失败!");
+        }
+
+    }
+
+    /**
+     * 删除菜单
+     * @param id 菜单ID
+     * @return com.liuhu.rainbow.system.vo.JsonResult
+     * @author melo、lh
+     * @createTime 2019-11-13 13:58:02
+     */
+    @DeleteMapping("/deleteMenus")
+    public JsonResult deleteMenus(String id){
+        this.menuService.deleteMenus(id);
+        return JsonResult.ok("删除菜单信息成功");
+    }
+
+
+    /**
+     * 通过菜单ID得到菜单信息
+     * @param id 菜单ID
+     * @return com.liuhu.rainbow.system.vo.JsonResult
+     * @author melo、lh
+     * @createTime 2019-11-13 14:30:31
+     */
+    @GetMapping("/getMenuById")
+    public JsonResult getMenuById(String id){
+        QueryWrapper<Menu> queryWrapper = new QueryWrapper<>();
+        Menu menu = this.menuService.getBaseMapper().selectOne(queryWrapper.eq("ID", id).eq("STATUS", "0"));
+        if(null != menu){
+            // 如果父菜单ID为空
+            if(StringUtils.isBlank(menu.getParentId())){
+                menu.setParentName("根菜单");
+                menu.setParentId("0");
+            }else{
+                QueryWrapper<Menu> menuQueryWrapper = new QueryWrapper<>();
+                Menu parentMenu = this.menuService.getBaseMapper().selectOne(menuQueryWrapper.eq("ID", menu.getParentId()).eq("STATUS", "0"));
+                if(null != parentMenu){
+                    menu.setParentName(parentMenu.getName());
+                }else{
+                    menu.setParentName("根菜单");
+                    menu.setParentId("0");
+                }
+            }
+            return JsonResult.ok().addData(menu);
+        }else{
+            return JsonResult.fail("获取菜单信息失败");
         }
 
     }

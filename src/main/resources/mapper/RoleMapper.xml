@@ -47,4 +47,10 @@
           </foreach>
     </insert>
 
+    <select id="selectRoleByMenuId" parameterType="string" resultMap="BaseResultMap">
+            SELECT SR.* FROM sys_role_menu SRM
+                JOIN sys_role SR ON SRM.ROLE_ID = SR.ID
+            WHERE SRM.MENU_ID = #{id}
+    </select>
+
 </mapper>

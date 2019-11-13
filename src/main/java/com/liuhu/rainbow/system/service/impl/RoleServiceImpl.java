@@ -102,6 +102,17 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         }
     }
 
+    @Override
+    public List<Role> selectRoleByMenuId(String id) {
+        List<Role> roleList = null;
+        try {
+            roleList =this.roleMapper.selectRoleByMenuId(id);
+        }catch (Exception e){
+            throw  new RainbowException("查询菜单绑定角色信息失败");
+        }
+        return roleList;
+    }
+
 
     public void updateEntity(Role role, User currentUser) {
         if (null != role) {

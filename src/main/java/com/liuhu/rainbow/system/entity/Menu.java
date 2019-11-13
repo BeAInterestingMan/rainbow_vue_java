@@ -35,12 +35,7 @@ public class Menu extends Model<Menu> {
     /**
      * 菜单/按钮名称
      */
-    private String menuName;
-
-    /**
-     * 菜单URL
-     */
-    private String url;
+    private String name;
 
     /**
      * 权限标识
@@ -63,9 +58,8 @@ public class Menu extends Model<Menu> {
     private Long sort;
 
     /**
-     * vue-router路径
+     * 菜单URL
      */
-    @TableField(exist = false)
     private String path;
 
 
@@ -111,12 +105,7 @@ public class Menu extends Model<Menu> {
     @TableField(exist = false)
     private List<Menu> children;
 
-    /** vue组件名称*/
+    /** 父菜单名称*/
     @TableField(exist = false)
-    private String name;
-
-    /** vue菜单图标*/
-    @TableField(exist = false)
-    private String iconCls;
-
+    private String parentName;
 }
