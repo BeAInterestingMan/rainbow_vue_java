@@ -65,4 +65,13 @@
             where  sur.ROLE_ID = #{id}
     </select>
 
+
+
+    <select id="selectUserList" resultMap="BaseResultMap">
+        SELECT * FROM sys_user where 1=1
+        <if test="nickname != null and nickname != ''">
+            <![CDATA[and nickname like  CONCAT('%',#{nickname},'%') ]]>
+        </if>
+    </select>
+
 </mapper>

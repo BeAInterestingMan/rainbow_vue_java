@@ -1,5 +1,6 @@
 package com.liuhu.rainbow.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.liuhu.rainbow.system.authentication.jwt.JWTToken;
 import com.liuhu.rainbow.system.entity.User;
@@ -39,7 +40,7 @@ public interface IUserService extends IService<User> {
      * @author melo、lh
      * @createTime 2019-10-29 16:54:24
      */
-    List<User> selectUserList(String nickname);
+   IPage<User> selectUserList(Integer currentPage, Integer pageSize, String nickname);
     /**
      *  保存用户所属角色  （先删除  再添加）
      * @param roleIds 角色ID集合

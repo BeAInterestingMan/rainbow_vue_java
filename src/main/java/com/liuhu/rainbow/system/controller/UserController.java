@@ -2,6 +2,7 @@ package com.liuhu.rainbow.system.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.liuhu.rainbow.system.Constant.RainbowConstant;
 import com.liuhu.rainbow.system.authentication.shiro.ShiroUtils;
 import com.liuhu.rainbow.system.entity.CheckPassword;
@@ -46,9 +47,11 @@ public class UserController {
      * @createTime 2019-10-30 11:14:00
      */
     @RequestMapping("/list")
-    public JsonResult getUserList(String nickname){
-        List<User> users = this.userService.selectUserList(nickname);
-        return JsonResult.ok().addData(users);
+    public JsonResult getUserList(@RequestParam(defaultValue = "1") Integer currentPage,
+                                  @RequestParam(defaultValue = "3") Integer pageSize,
+                                  String nickname){
+        IPage<User> userIPage = this.userService.selectUserList(currentPage, pageSize, nickname);
+        return JsonResult.ok().addData(userIPage.getRecords()).add(RainbowConstant.TOTAL_COUNT,userIPage.getTotal());
     }
 
     /**

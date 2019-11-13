@@ -1,6 +1,8 @@
 package com.liuhu.rainbow.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liuhu.rainbow.system.authentication.jwt.JWTToken;
 import com.liuhu.rainbow.system.authentication.shiro.ShiroUtils;
@@ -62,23 +64,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public List<User> selectUserList(String nickname) {
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        if(StringUtils.isNotBlank(nickname)){
-            queryWrapper.eq("NICKNAME",nickname);
-        }
-        queryWrapper.orderByDesc("CREATE_TIME");
-        List<User> userList = this.userMapper.selectList(queryWrapper);
-
-        List<User> users = new ArrayList<>();
-        for (User user: userList) {
-            List<Role> roleList = this.roleMapper.selectRoleListByUsername(user.getUsername());
-            if(null != roleList && roleList.size() > 0){
-                user.setRoles(roleList);
-                users.add(user);
+    public IPage<User> selectUserList(Integer currentPage,Integer pageSize, String nickname) {
+        IPage<User> userPage = null;
+        try {
+            Page<User> page = new Page<>(currentPage,pageSize);
+            // 用户分页
+            userPage = this.userMapper.selectUserList(page, nickname);
+            // 加入用户对应角色
+            for (User user: userPage.getRecords()) {
+                List<Role> roleList = this.roleMapper.selectRoleListByUsername(user.getUsername());
+                if(null != roleList && roleList.size() > 0){
+                    user.setRoles(roleList);
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RainbowException("查询用户列表失败");
         }
-        return users;
+        return userPage;
     }
 
     @Override

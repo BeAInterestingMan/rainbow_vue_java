@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liuhu.rainbow.system.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -59,4 +60,6 @@ public interface UserMapper extends BaseMapper<User> {
     * @createTime 2019-11-12 10:55:57
     */
     List<User> findRoleWithUser(String id);
+
+    IPage<User> selectUserList(Page<User> page, @Param("nickname") String nickname);
 }
