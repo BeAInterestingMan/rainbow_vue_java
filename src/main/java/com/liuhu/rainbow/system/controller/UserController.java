@@ -3,6 +3,7 @@ package com.liuhu.rainbow.system.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.liuhu.rainbow.annotation.RainbowLog;
 import com.liuhu.rainbow.system.Constant.RainbowConstant;
 import com.liuhu.rainbow.system.authentication.shiro.ShiroUtils;
 import com.liuhu.rainbow.system.entity.CheckPassword;
@@ -46,6 +47,7 @@ public class UserController {
      * @author melo、lh
      * @createTime 2019-10-30 11:14:00
      */
+    @RainbowLog(description = "查询用户列表",operateType = RainbowConstant.OPERATE_TYPE_VIEW)
     @RequestMapping("/list")
     public JsonResult getUserList(@RequestParam(defaultValue = "1") Integer currentPage,
                                   @RequestParam(defaultValue = "3") Integer pageSize,

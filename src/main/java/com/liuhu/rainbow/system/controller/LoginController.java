@@ -1,5 +1,6 @@
 package com.liuhu.rainbow.system.controller;
 
+import com.liuhu.rainbow.annotation.RainbowLog;
 import com.liuhu.rainbow.system.Constant.RainbowConstant;
 import com.liuhu.rainbow.system.authentication.jwt.JWTToken;
 import com.liuhu.rainbow.system.authentication.jwt.JWTUtil;
@@ -31,11 +32,16 @@ public class LoginController {
     @Autowired
     private RedisService redisService;
 
-    @Autowired
-    private UserMapper userMapper;
-
+    /**
+     * 登陆操作
+     * @param user 用户实体
+     * @param request
+     * @return com.liuhu.rainbow.system.vo.JsonResult
+     * @author melo、lh
+     * @createTime 2019-11-14 16:26:01
+     */
     @RequestMapping("/login")
-    public JsonResult toLogin( User user,String username,String password,HttpServletRequest request) {
+    public JsonResult toLogin( User user,HttpServletRequest request) {
 
         if (StringUtils.isBlank(user.getUsername()) || StringUtils.isBlank(user.getPassword())) {
             return JsonResult.fail("用户名和密码不能为空!");

@@ -34,4 +34,15 @@ public class RainbowConstant {
     /** 分页总记录数*/
     public static final String TOTAL_COUNT = "total";
 
+    /**操作类型为新增*/
+    public final static  String  OPERATE_TYPE_ADD = "0";
+
+    /**操作类型为删除*/
+    public final static  String  OPERATE_TYPE_DELETE = "1";
+
+    /**操作类型为修改*/
+    public final static  String  OPERATE_TYPE_UPDATE = "2";
+
+    /**操作类型为查看*/
+    public final static  String  OPERATE_TYPE_VIEW = "3";
 }

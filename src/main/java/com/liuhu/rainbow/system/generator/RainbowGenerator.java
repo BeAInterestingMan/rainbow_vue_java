@@ -25,7 +25,7 @@ public class RainbowGenerator {
             // 全局配置
             GlobalConfig gc = new GlobalConfig();
             gc.setAuthor("liuhu");
-            gc.setOutputDir("F:\\vue_poject\\rainbow_perfect\\src\\main\\java");
+            gc.setOutputDir("F:\\vue_poject\\rainbow-vue\\rainbow_perfect\\src\\main\\java");
             // 是否覆盖同名文件，默认是false
             gc.setFileOverride(false);
             // 不需要ActiveRecord特性的请改为false
@@ -43,7 +43,7 @@ public class RainbowGenerator {
             dsc.setDbType(DbType.MYSQL);
             dsc.setDriverName("com.mysql.cj.jdbc.Driver");
             dsc.setUsername("root");
-            dsc.setPassword("123456");
+            dsc.setPassword("root");
             dsc.setUrl("jdbc:mysql://129.211.60.109:3306/rainbow?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8");
             mpg.setDataSource(dsc);
 
@@ -56,7 +56,7 @@ public class RainbowGenerator {
             // 表名生成策略（忽略表名下划线）
             strategy.setNaming(NamingStrategy.underline_to_camel);
             // 需要生成的表
-            strategy.setInclude(new String[]{"sys_menu"});
+            strategy.setInclude(new String[]{"sys_log"});
             mpg.setStrategy(strategy);
 
             // 包配置
