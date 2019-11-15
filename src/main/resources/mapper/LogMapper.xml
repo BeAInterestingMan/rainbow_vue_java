@@ -18,8 +18,8 @@
 
      <select id="selectLogWithPage" parameterType="map" resultMap="BaseResultMap">
          SELECT * FROM sys_log  where 1 =1
-         <if test="null != username and ''!=username">
-             <![CDATA[ and username like  CONCAT('%',#{username},'%') ]]>
+         <if test="null != searchParams.username and '' != searchParams.username">
+             <![CDATA[ and username like  CONCAT('%',#{searchParams.username},'%') ]]>
          </if>
      </select>
 </mapper>

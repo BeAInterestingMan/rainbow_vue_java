@@ -17,5 +17,5 @@ import java.util.Map;
 @Repository
 public interface LogMapper extends BaseMapper<Log> {
 
-    IPage<Log> selectLogWithPage(Page<Log> page, @Param("searchParams") Map<String, Object> searchParams);
+    IPage<Log> selectLogWithPage(@Param("page") Page<Log> page,@Param("searchParams") Map<String, Object> searchParams);
 }

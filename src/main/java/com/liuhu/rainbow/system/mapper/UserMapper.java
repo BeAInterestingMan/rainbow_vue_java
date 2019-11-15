@@ -61,5 +61,5 @@ public interface UserMapper extends BaseMapper<User> {
     */
     List<User> findRoleWithUser(String id);
 
-    IPage<User> selectUserList(Page<User> page, @Param("nickname") String nickname);
+    IPage<User> selectUserList(Page<User> page, String nickname);
 }

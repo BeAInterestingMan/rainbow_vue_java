@@ -29,5 +29,5 @@ public interface ILogService extends IService<Log> {
     @Async
     void saveLog(ProceedingJoinPoint point, RainbowLog rainbowlog);
 
-    IPage<Log> selectLogWithPage(Integer currentPage, Integer pageSize, @Param("searchParams") Map<String, Object> searchParams);
+    IPage<Log> selectLogWithPage(Integer currentPage, Integer pageSize,Map<String, Object> searchParams);
 }
