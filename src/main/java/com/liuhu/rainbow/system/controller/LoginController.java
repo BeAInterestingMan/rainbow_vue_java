@@ -1,13 +1,18 @@
 package com.liuhu.rainbow.system.controller;
 
-import com.liuhu.rainbow.annotation.RainbowLog;
+
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.liuhu.rainbow.system.Constant.RainbowConstant;
 import com.liuhu.rainbow.system.authentication.jwt.JWTToken;
 import com.liuhu.rainbow.system.authentication.jwt.JWTUtil;
+import com.liuhu.rainbow.system.entity.ActiveUser;
 import com.liuhu.rainbow.system.entity.User;
-import com.liuhu.rainbow.system.mapper.UserMapper;
+import com.liuhu.rainbow.system.properties.RainbowProperties;
 import com.liuhu.rainbow.system.redis.service.RedisService;
 import com.liuhu.rainbow.system.service.IUserService;
+import com.liuhu.rainbow.system.util.AddressUtil;
+import com.liuhu.rainbow.system.util.DateUtil;
+import com.liuhu.rainbow.system.util.IPUtil;
 import com.liuhu.rainbow.system.util.MD5Utils;
 import com.liuhu.rainbow.system.vo.JsonResult;
 import org.apache.commons.lang3.StringUtils;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -31,6 +37,9 @@ public class LoginController {
 
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private RainbowProperties properties;
 
     /**
      * 登陆操作
@@ -61,7 +70,9 @@ public class LoginController {
         }
         // 加密签名
         String token = JWTUtil.sign(currentUser.getUsername(), passwordEncrypt);
-        JWTToken jwtToken = new JWTToken(token);
+        LocalDateTime expireTime = LocalDateTime.now().plusSeconds(properties.getJwtTimeOut());
+        String expireTimeStr = DateUtil.formatFullTime(expireTime);
+        JWTToken jwtToken = new JWTToken(token,expireTimeStr);
         Map<String, Object> userInfo = this.userService.getUserWithToken(jwtToken, currentUser);
         try {
             // 将签名放入redis缓存
@@ -83,8 +94,9 @@ public class LoginController {
      * @createTime 2019-10-22 10:59:18
      */
     private void saveTokenToRedis(User currentUser, String token, HttpServletRequest request) throws Exception {
-        // redis 中存储这个加密 token，key = 前缀 + token + 过期时间  ;
-        this.redisService.set(RainbowConstant.RAINBOW_TOKEN+token+"."+RainbowConstant.EXPIRE_TIME , token,RainbowConstant.EXPIRE_TIME);
+        String ip = IPUtil.getIpAddr(request);
+        // redis 中存储这个加密 token，key = 前缀 + 加密 token + .ip
+        this.redisService.set(RainbowConstant.RAINBOW_TOKEN +token+ StringPool.DOT + ip,token,properties.getJwtTimeOut()*1000);
     }
 
 

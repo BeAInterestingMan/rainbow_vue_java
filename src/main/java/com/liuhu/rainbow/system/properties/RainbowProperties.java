@@ -17,4 +17,10 @@ import org.springframework.stereotype.Component;
 public class RainbowProperties {
     /** 免认证URL*/
     private String anonUrl;
+
+    /**
+     * token默认有效时间 1天
+     */
+    private Long jwtTimeOut = 6000L;
+
 }

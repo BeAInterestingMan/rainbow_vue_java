@@ -12,11 +12,17 @@ import org.apache.shiro.authc.AuthenticationToken;
 public class JWTToken implements AuthenticationToken {
     /** token密匙*/
     private String token;
+    /** 过期时间*/
+    private String exipreAt;
+
+    public JWTToken(String token, String exipreAt) {
+        this.token = token;
+        this.exipreAt = exipreAt;
+    }
 
     public JWTToken(String token) {
         this.token = token;
     }
-
     @Override
     public Object getPrincipal() {
         return token;

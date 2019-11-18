@@ -56,6 +56,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         //1- 封装token
         Map<String,Object> userInfoMap = new HashMap<>();
         userInfoMap.put("token",jwtToken.getToken());
+        userInfoMap.put("expireTime",jwtToken.getExipreAt());
         // 2- 得到用户角色
         List<Role> roles = this.roleMapper.selectRoleListByUsername(user.getUsername());
         userInfoMap.put("roles",roles);
