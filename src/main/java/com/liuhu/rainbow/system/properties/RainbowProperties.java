@@ -21,6 +21,6 @@ public class RainbowProperties {
     /**
      * token默认有效时间 1天
      */
-    private Long jwtTimeOut = 6000L;
+    private Long jwtTimeOut = 86400L;
 
 }

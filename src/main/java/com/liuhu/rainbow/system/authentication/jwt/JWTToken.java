@@ -15,14 +15,16 @@ public class JWTToken implements AuthenticationToken {
     /** 过期时间*/
     private String exipreAt;
 
+
+    public JWTToken(String token) {
+        this.token = token;
+    }
+
     public JWTToken(String token, String exipreAt) {
         this.token = token;
         this.exipreAt = exipreAt;
     }
 
-    public JWTToken(String token) {
-        this.token = token;
-    }
     @Override
     public Object getPrincipal() {
         return token;
@@ -32,4 +34,5 @@ public class JWTToken implements AuthenticationToken {
     public Object getCredentials() {
         return token;
     }
+
 }

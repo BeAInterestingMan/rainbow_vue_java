@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class ShiroUtils {
 
-    @Autowired
-    private IUserService userService;
     /**
      * 得到当前用户名
      * @return java.lang.String

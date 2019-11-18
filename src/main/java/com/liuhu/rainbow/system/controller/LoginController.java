@@ -5,18 +5,22 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.liuhu.rainbow.system.Constant.RainbowConstant;
 import com.liuhu.rainbow.system.authentication.jwt.JWTToken;
 import com.liuhu.rainbow.system.authentication.jwt.JWTUtil;
-import com.liuhu.rainbow.system.entity.ActiveUser;
+import com.liuhu.rainbow.system.authentication.shiro.ShiroUtils;
 import com.liuhu.rainbow.system.entity.User;
+import com.liuhu.rainbow.system.exception.RainbowException;
+import com.liuhu.rainbow.system.exception.RedisConnectException;
 import com.liuhu.rainbow.system.properties.RainbowProperties;
 import com.liuhu.rainbow.system.redis.service.RedisService;
 import com.liuhu.rainbow.system.service.IUserService;
-import com.liuhu.rainbow.system.util.AddressUtil;
 import com.liuhu.rainbow.system.util.DateUtil;
 import com.liuhu.rainbow.system.util.IPUtil;
 import com.liuhu.rainbow.system.util.MD5Utils;
 import com.liuhu.rainbow.system.vo.JsonResult;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -70,6 +74,7 @@ public class LoginController {
         }
         // 加密签名
         String token = JWTUtil.sign(currentUser.getUsername(), passwordEncrypt);
+        // 过期时间
         LocalDateTime expireTime = LocalDateTime.now().plusSeconds(properties.getJwtTimeOut());
         String expireTimeStr = DateUtil.formatFullTime(expireTime);
         JWTToken jwtToken = new JWTToken(token,expireTimeStr);
@@ -99,5 +104,18 @@ public class LoginController {
         this.redisService.set(RainbowConstant.RAINBOW_TOKEN +token+ StringPool.DOT + ip,token,properties.getJwtTimeOut()*1000);
     }
 
-
+    @GetMapping("/logout")
+    public JsonResult logout(HttpServletRequest servletRequest){
+        String ip = IPUtil.getIpAddr(servletRequest);
+        //得到token
+        String token = (String) SecurityUtils.getSubject().getPrincipal();
+        String key = RainbowConstant.RAINBOW_TOKEN +token+ StringPool.DOT + ip;
+        try {
+            redisService.del(RainbowConstant.RAINBOW_TOKEN +token+ StringPool.DOT + ip);
+        } catch (RedisConnectException e) {
+            e.printStackTrace();
+            throw  new RainbowException("登出失败");
+        }
+        return JsonResult.ok();
+   }
 }
