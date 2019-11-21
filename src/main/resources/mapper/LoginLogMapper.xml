@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuhu.rainbow.system.mapper.LoginLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.liuhu.rainbow.system.entity.LoginLog">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="login_time" property="loginTime" />
+        <result column="location" property="location" />
+        <result column="ip" property="ip" />
+    </resultMap>
+
+    <select id="selectCurrentDayVisit" resultType="string">
+        select count(1) from sys_login_log where to_days(login_time) = to_days(now());
+    </select>
+
+    <select id="selectCurrentWeekVisit" resultType="string">
+        SELECT count(1) FROM sys_login_log where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(login_time)
+    </select>
+
+
+    <select id="selectCurrentMonthVisit" resultType="string">
+        SELECT count(1) FROM sys_login_log WHERE DATE_FORMAT(login_time, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+    </select>
+
+    <select id="selectCurrentYearVisit" resultType="string">
+         select count(1) from sys_login_log where YEAR(login_time)=YEAR(NOW());
+    </select>
+
+    <select id="selectTotalVisit" resultType="string">
+        select count(1) from sys_login_log
+    </select>
+</mapper>

@@ -3,7 +3,7 @@ package com.liuhu.rainbow.system.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.liuhu.rainbow.annotation.RainbowLog;
+import com.liuhu.rainbow.system.annotation.RainbowLog;
 import com.liuhu.rainbow.system.Constant.RainbowConstant;
 import com.liuhu.rainbow.system.authentication.shiro.ShiroUtils;
 import com.liuhu.rainbow.system.entity.CheckPassword;
@@ -13,13 +13,8 @@ import com.liuhu.rainbow.system.service.IRoleService;
 import com.liuhu.rainbow.system.service.IUserService;
 import com.liuhu.rainbow.system.util.MD5Utils;
 import com.liuhu.rainbow.system.vo.JsonResult;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
@@ -64,6 +59,7 @@ public class UserController {
      * @author melo、lh
      * @createTime 2019-10-30 11:16:51
      */
+    @RainbowLog(description = "保存用户所属角色",operateType = RainbowConstant.OPERATE_TYPE_ADD)
     @PostMapping("/saveUserRoles")
     public JsonResult saveUserRoles(String[] roleIds,String userId){
         this.userService.saveUserRoles(roleIds,userId);
@@ -93,6 +89,7 @@ public class UserController {
     * @author melo、lh
     * @createTime 2019-10-30 16:04:05
     */
+   @RainbowLog(description = "删除用户",operateType = RainbowConstant.OPERATE_TYPE_DELETE)
     @DeleteMapping("/delete")
     public JsonResult deleteUser(String id){
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
@@ -118,6 +115,7 @@ public class UserController {
     * @author melo、lh
     * @createTime 2019-10-30 17:02:26
     */
+   @RainbowLog(description = "更新用户状态",operateType = RainbowConstant.OPERATE_TYPE_UPDATE)
     @PutMapping("/updateStatus")
     public JsonResult updateStatus(String status,String id){
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
@@ -144,6 +142,7 @@ public class UserController {
      * @author melo、lh
      * @createTime 2019-10-31 10:45:27
      */
+     @RainbowLog(description = "保存用户",operateType = RainbowConstant.OPERATE_TYPE_ADD)
      @RequestMapping("/saveUser")
      public JsonResult saveOrUpdate(User user){
          boolean flag = this.userService.saveOrUpdateUser(user);
@@ -174,6 +173,7 @@ public class UserController {
       * @author melo、lh
       * @createTime 2019-10-31 16:33:57
       */
+     @RainbowLog(description = "校验密码是否正确",operateType = RainbowConstant.OPERATE_TYPE_VIEW)
      @PutMapping("/updateUserPassword")
      public JsonResult updatePassWord( CheckPassword checkPassword){
          User user = this.userService.getBaseMapper().selectOne(new QueryWrapper<User>().eq("ID", checkPassword.getId()));

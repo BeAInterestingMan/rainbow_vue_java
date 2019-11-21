@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liuhu.rainbow.system.Constant.RainbowConstant;
+import com.liuhu.rainbow.system.annotation.RainbowLog;
 import com.liuhu.rainbow.system.entity.Role;
 import com.liuhu.rainbow.system.mapper.RoleMapper;
 import com.liuhu.rainbow.system.service.IRoleService;
@@ -53,6 +54,7 @@ public class RoleController {
        * @author melo、lh
        * @createTime 2019-11-01 14:40:46
        */
+        @RainbowLog(description = "查询角色列表分页",operateType = RainbowConstant.OPERATE_TYPE_VIEW)
         @RequestMapping("/selectRoleWithPage")
         protected JsonResult selectRoleWithPage(  @RequestParam(defaultValue = "1") Integer currentPage,
                                                   @RequestParam(defaultValue = "10") Integer pageSize,
@@ -69,6 +71,7 @@ public class RoleController {
        * @createTime 2019-11-12 10:39:55
        */
       @PostMapping("/saveRole")
+      @RainbowLog(description = "保存角色",operateType = RainbowConstant.OPERATE_TYPE_ADD)
       public JsonResult saveRole(Role role){
             try {
                 boolean isAdd = this.roleService.saveOrUpdateRole(role);
@@ -104,6 +107,7 @@ public class RoleController {
        * @createTime 2019-11-12 14:26:56
        */
       @DeleteMapping("/deleteRole")
+      @RainbowLog(description = "删除角色",operateType = RainbowConstant.OPERATE_TYPE_DELETE)
       public JsonResult deleteRoleById(String id){
           this.roleService.deleteRoleById(id);
           return JsonResult.ok("删除角色信息成功");

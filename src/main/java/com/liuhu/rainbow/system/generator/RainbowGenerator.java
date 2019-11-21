@@ -56,7 +56,7 @@ public class RainbowGenerator {
             // 表名生成策略（忽略表名下划线）
             strategy.setNaming(NamingStrategy.underline_to_camel);
             // 需要生成的表
-            strategy.setInclude(new String[]{"sys_log"});
+            strategy.setInclude(new String[]{"sys_login_log"});
             mpg.setStrategy(strategy);
 
             // 包配置

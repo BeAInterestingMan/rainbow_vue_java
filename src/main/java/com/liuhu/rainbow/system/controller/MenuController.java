@@ -4,8 +4,10 @@ package com.liuhu.rainbow.system.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.liuhu.rainbow.system.Constant.RainbowConstant;
+import com.liuhu.rainbow.system.annotation.RainbowLog;
 import com.liuhu.rainbow.system.entity.Menu;
 import com.liuhu.rainbow.system.mapper.MenuMapper;
+import com.liuhu.rainbow.system.service.ILoginLogService;
 import com.liuhu.rainbow.system.service.IMenuService;
 import com.liuhu.rainbow.system.service.IRoleService;
 import com.liuhu.rainbow.system.vo.JsonResult;
@@ -13,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -25,13 +28,11 @@ import java.util.List;
 public class MenuController {
 
     @Autowired
-    private MenuMapper menuMapper;
-
-    @Autowired
     private IMenuService menuService;
 
     @Autowired
     private IRoleService roleService;
+
 
     /**
      * 后台组装vueRouter动态菜单数据
@@ -41,7 +42,7 @@ public class MenuController {
      * @createTime 2019-10-28 14:04:36
      */
     @RequestMapping("/getUserMenu/{username}")
-    public JsonResult getMenuList(@PathVariable String username){
+    public JsonResult getMenuList(@PathVariable String username, HttpServletRequest request){
         //得到树形菜单数据
         List<Menu> menuList = this.menuService.getUserMenu(username);
         return JsonResult.ok().addData(menuList);
@@ -71,6 +72,7 @@ public class MenuController {
      * @author melo、lh
      * @createTime 2019-11-08 16:19:11
      */
+    @RainbowLog(description = "更新角色",operateType = RainbowConstant.OPERATE_TYPE_UPDATE)
     @PostMapping("/updateRoleMenu")
     public JsonResult updateRoleMenu(String[] menuIds,String roleId){
         try {
@@ -104,6 +106,7 @@ public class MenuController {
     * @author melo、lh
     * @createTime 2019-11-13 09:35:45
     */
+   @RainbowLog(description = "菜单列表",operateType = RainbowConstant.OPERATE_TYPE_VIEW)
     @GetMapping("/getAllMenusTable")
     public JsonResult getAllMenusTable(
             @RequestParam(defaultValue = "1") Integer currentPage,
@@ -122,6 +125,7 @@ public class MenuController {
      * @author melo、lh
      * @createTime 2019-11-13 09:45:33
      */
+    @RainbowLog(description = "保存菜单",operateType = RainbowConstant.OPERATE_TYPE_ADD)
     @PostMapping("/saveMenu")
     public JsonResult saveOrUpdateMenu(Menu menu){
         try {
@@ -145,6 +149,7 @@ public class MenuController {
      * @author melo、lh
      * @createTime 2019-11-13 13:58:02
      */
+    @RainbowLog(description = "删除菜单",operateType = RainbowConstant.OPERATE_TYPE_DELETE)
     @DeleteMapping("/deleteMenus")
     public JsonResult deleteMenus(String id){
         this.menuService.deleteMenus(id);

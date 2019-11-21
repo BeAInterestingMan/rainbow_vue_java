@@ -5,12 +5,13 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.liuhu.rainbow.system.Constant.RainbowConstant;
 import com.liuhu.rainbow.system.authentication.jwt.JWTToken;
 import com.liuhu.rainbow.system.authentication.jwt.JWTUtil;
-import com.liuhu.rainbow.system.authentication.shiro.ShiroUtils;
+import com.liuhu.rainbow.system.entity.LoginLog;
 import com.liuhu.rainbow.system.entity.User;
 import com.liuhu.rainbow.system.exception.RainbowException;
 import com.liuhu.rainbow.system.exception.RedisConnectException;
 import com.liuhu.rainbow.system.properties.RainbowProperties;
 import com.liuhu.rainbow.system.redis.service.RedisService;
+import com.liuhu.rainbow.system.service.ILoginLogService;
 import com.liuhu.rainbow.system.service.IUserService;
 import com.liuhu.rainbow.system.util.DateUtil;
 import com.liuhu.rainbow.system.util.IPUtil;
@@ -18,7 +19,6 @@ import com.liuhu.rainbow.system.util.MD5Utils;
 import com.liuhu.rainbow.system.vo.JsonResult;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +44,9 @@ public class LoginController {
 
     @Autowired
     private RainbowProperties properties;
+
+    @Autowired
+    private ILoginLogService loginLogService;
 
     /**
      * 登陆操作
@@ -85,6 +88,10 @@ public class LoginController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //保存登陆日志
+        LoginLog loginLog = new LoginLog();
+        loginLog.setUsername(user.getUsername());
+        this.loginLogService.saveLoginLog(loginLog);
         return JsonResult.ok("登陆成功").addData(userInfo);
 
 
@@ -104,6 +111,13 @@ public class LoginController {
         this.redisService.set(RainbowConstant.RAINBOW_TOKEN +token+ StringPool.DOT + ip,token,properties.getJwtTimeOut()*1000);
     }
 
+    /**
+     *  注销
+     * @param servletRequest
+     * @return com.liuhu.rainbow.system.vo.JsonResult
+     * @author melo、lh
+     * @createTime 2019-11-20 15:40:46
+     */
     @GetMapping("/logout")
     public JsonResult logout(HttpServletRequest servletRequest){
         String ip = IPUtil.getIpAddr(servletRequest);

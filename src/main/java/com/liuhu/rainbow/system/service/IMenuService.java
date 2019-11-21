@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.liuhu.rainbow.system.entity.Menu;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -72,4 +73,5 @@ public interface IMenuService extends IService<Menu> {
      * @createTime 2019-11-13 13:59:05
      */
     void deleteMenus(String id);
+
 }

@@ -3,6 +3,7 @@ package com.liuhu.rainbow.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.liuhu.rainbow.system.Constant.RainbowConstant;
+import com.liuhu.rainbow.system.annotation.RainbowLog;
 import com.liuhu.rainbow.system.entity.Log;
 import com.liuhu.rainbow.system.service.ILogService;
 import com.liuhu.rainbow.system.vo.JsonResult;
@@ -28,7 +29,17 @@ public class LogController {
      @Autowired
      private ILogService logService;
 
+     /**
+      *  操作日志分页
+      * @param currentPage
+      * @param pageSize
+      * @param searchParams
+      * @return com.liuhu.rainbow.system.vo.JsonResult
+      * @author melo、lh
+      * @createTime 2019-11-21 16:48:18
+      */
      @GetMapping("/selectLogWithPage")
+     @RainbowLog(description = "操作日志分页",operateType = RainbowConstant.OPERATE_TYPE_VIEW)
      public JsonResult selectLogWithPage(@RequestParam(defaultValue = "1") Integer currentPage,
                                          @RequestParam(defaultValue = "10") Integer pageSize,
                                          @RequestParam Map<String,Object > searchParams){

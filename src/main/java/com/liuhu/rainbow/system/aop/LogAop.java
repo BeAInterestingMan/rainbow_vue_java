@@ -1,22 +1,14 @@
 package com.liuhu.rainbow.system.aop;
 
-import com.liuhu.rainbow.annotation.RainbowLog;
-import com.liuhu.rainbow.system.authentication.jwt.JWTUtil;
-import com.liuhu.rainbow.system.entity.Log;
+
+import com.liuhu.rainbow.system.annotation.RainbowLog;
 import com.liuhu.rainbow.system.service.ILogService;
-import com.liuhu.rainbow.system.util.HttpContextUtil;
-import com.liuhu.rainbow.system.util.IPUtil;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 操作日志记录 Aop
@@ -36,7 +28,7 @@ public class LogAop {
      * @author melo、lh
      * @createTime 2019-11-14 14:36:41
      */
-    @Pointcut("@annotation(com.liuhu.rainbow.annotation.RainbowLog)")
+    @Pointcut("@annotation(com.liuhu.rainbow.system.annotation.RainbowLog)")
     public void pointCut(){
 
     }

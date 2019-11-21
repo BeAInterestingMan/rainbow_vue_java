@@ -2,9 +2,8 @@ package com.liuhu.rainbow.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.liuhu.rainbow.annotation.RainbowLog;
+import com.liuhu.rainbow.system.annotation.RainbowLog;
 import com.liuhu.rainbow.system.entity.Log;
-import org.apache.ibatis.annotations.Param;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.scheduling.annotation.Async;
 
