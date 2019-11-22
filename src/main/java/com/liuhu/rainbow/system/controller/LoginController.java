@@ -84,7 +84,7 @@ public class LoginController {
         Map<String, Object> userInfo = this.userService.getUserWithToken(jwtToken, currentUser);
         try {
             // 将签名放入redis缓存
-            this.saveTokenToRedis(currentUser, token, request);
+            this.saveTokenToRedis(token, request);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -98,14 +98,13 @@ public class LoginController {
     }
     /**
      *  保存token到redis
-     * @param currentUser 当前用户
      * @param token 密匙
      * @param request
      * @return void
      * @author melo、lh
      * @createTime 2019-10-22 10:59:18
      */
-    private void saveTokenToRedis(User currentUser, String token, HttpServletRequest request) throws Exception {
+    private void saveTokenToRedis(String token, HttpServletRequest request) throws Exception {
         String ip = IPUtil.getIpAddr(request);
         // redis 中存储这个加密 token，key = 前缀 + 加密 token + .ip
         this.redisService.set(RainbowConstant.RAINBOW_TOKEN +token+ StringPool.DOT + ip,token,properties.getJwtTimeOut()*1000);
@@ -125,7 +124,7 @@ public class LoginController {
         String token = (String) SecurityUtils.getSubject().getPrincipal();
         String key = RainbowConstant.RAINBOW_TOKEN +token+ StringPool.DOT + ip;
         try {
-            redisService.del(RainbowConstant.RAINBOW_TOKEN +token+ StringPool.DOT + ip);
+            redisService.del(key.toLowerCase());
         } catch (RedisConnectException e) {
             e.printStackTrace();
             throw  new RainbowException("登出失败");
