@@ -3,7 +3,7 @@
 ## 1. 目的 使用 vue + springboot + shiro + jwt 搭建一个基本的RPAC骨架
  [前端地址](https://github.com/makePromise/rainbow_vue)
 ### 项目运行
-#### 导入rainbow.sql，修改mysql的连接地址和redis的地址端口为8088
+#### 导入rainbow.sql，修改application.yml的mysql连接地址和redis的地址，项目的端口号为8088
 
 ### 项目思路
 ![Image text](https://github.com/makePromise/rainbow_vue/blob/master/src/assets/jwt.jpg)
